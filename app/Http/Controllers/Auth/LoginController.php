@@ -22,15 +22,22 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
+        // Check if user exists and is suspended
+        $user = User::where('email', $credentials['email'])->first();
+        if ($user && $user->isSuspended()) {
+            return back()->withErrors([
+                'email' => 'This account has been suspended.',
+            ])->onlyInput('email');
+        }
 
-            return redirect()->intended('/dashboard');
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ])->withInput($request->only('email'));
+        ])->onlyInput('email');
     }
 
     public function logout(Request $request)

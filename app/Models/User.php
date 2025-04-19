@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'suspended',
     ];
 
     /**
@@ -39,13 +40,11 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'suspended' => 'boolean',
+    ];
 
     /**
      * Check if the user is an admin
@@ -82,5 +81,31 @@ class User extends Authenticatable
             'staff' => 'Staff Member',
             default => 'Unknown Role'
         };
+    }
+
+    /**
+     * Check if the user is suspended
+     */
+    public function isSuspended(): bool
+    {
+        return $this->suspended ?? false;
+    }
+
+    /**
+     * Suspend the user
+     */
+    public function suspend(): void
+    {
+        $this->suspended = true;
+        $this->save();
+    }
+
+    /**
+     * Unsuspend the user
+     */
+    public function unsuspend(): void
+    {
+        $this->suspended = false;
+        $this->save();
     }
 }
