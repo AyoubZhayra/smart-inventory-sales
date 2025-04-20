@@ -93,23 +93,41 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     @if(!$user->isAdmin())
                                         @if(Auth::user()->isAdmin() || $user->role === 'staff')
-                                            <button onclick="editUser({{ $user->id }})" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
-                                            <form action="{{ route('users.destroy', $user) }}" method="POST" class="inline-block mr-3">
+                                            <button onclick="editUser({{ $user->id }})" class="text-indigo-600 hover:text-indigo-900 inline-flex items-center justify-center h-8 w-8 rounded-md hover:bg-gray-100 transition-colors" title="Edit User">
+                                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                                </svg>
+                                            </button>
+                                            
+                                            <form action="{{ route('users.destroy', $user) }}" method="POST" class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" onclick="confirmDelete(this.parentElement)" class="text-red-600 hover:text-red-900">Delete</button>
+                                                <button type="button" onclick="confirmDelete(this.parentElement)" class="text-red-600 hover:text-red-900 inline-flex items-center justify-center h-8 w-8 rounded-md hover:bg-gray-100 transition-colors" title="Delete User">
+                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                    </svg>
+                                                </button>
                                             </form>
+                                            
                                             @if($user->isSuspended())
                                                 <form action="{{ route('users.unsuspend', $user) }}" method="POST" class="inline-block">
                                                     @csrf
                                                     @method('PUT')
-                                                    <button type="submit" class="text-green-600 hover:text-green-900">Unsuspend</button>
+                                                    <button type="submit" class="text-green-600 hover:text-green-900 inline-flex items-center justify-center h-8 w-8 rounded-md hover:bg-gray-100 transition-colors" title="Unsuspend User">
+                                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                        </svg>
+                                                    </button>
                                                 </form>
                                             @else
                                                 <form action="{{ route('users.suspend', $user) }}" method="POST" class="inline-block">
                                                     @csrf
                                                     @method('PUT')
-                                                    <button type="submit" class="text-orange-600 hover:text-orange-900">Suspend</button>
+                                                    <button type="submit" class="text-orange-600 hover:text-orange-900 inline-flex items-center justify-center h-8 w-8 rounded-md hover:bg-gray-100 transition-colors" title="Suspend User">
+                                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                                        </svg>
+                                                    </button>
                                                 </form>
                                             @endif
                                         @else
