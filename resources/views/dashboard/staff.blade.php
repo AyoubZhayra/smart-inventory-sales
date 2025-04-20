@@ -5,9 +5,8 @@
 @section('content')
     <div class="space-y-8 fade-in">
         <!-- Staff Dashboard Header -->
-        <div class="bg-gradient-to-r from-green-600 to-emerald-700 rounded-xl shadow-lg p-6 mb-6">
-            <h1 class="text-2xl font-bold text-white mb-2">Staff Dashboard</h1>
-            <p class="text-green-100">Welcome, {{ Auth::user()->name }}. Manage sales and inventory operations here.</p>
+        <div class="bg-gradient-to-r from-green-600 to-emerald-700 rounded-xl shadow-lg p-8 mb-6">
+            <h1 class="text-3xl font-bold text-white mb-4">Welcome, {{ Auth::user()->name }}!</h1>
         </div>
 
         <!-- Stats Grid -->
