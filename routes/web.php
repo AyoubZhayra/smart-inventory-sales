@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ManagerDashboardController;
 use App\Http\Controllers\StaffDashboardController;
 use App\Http\Middleware\CheckUserRole;
+use App\Http\Controllers\CategoryController;
 
 // Redirect root to login
 Route::get('/', function () {
@@ -58,4 +59,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/users/{user}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
         Route::put('/users/{user}/unsuspend', [UserController::class, 'unsuspend'])->name('users.unsuspend');
     });
+
+    Route::get('/inventory', [App\Http\Controllers\InventoryController::class, 'index'])->name('inventory.index');
+
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 });

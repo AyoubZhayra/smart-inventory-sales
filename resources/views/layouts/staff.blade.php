@@ -108,11 +108,11 @@
                     <div class="hidden md:flex md:items-center md:space-x-4">
                         @foreach([
                             ['route' => 'staff.dashboard', 'icon' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6', 'text' => 'Dashboard'],
-                            ['route' => '#', 'icon' => 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4', 'text' => 'Inventory'],
+                            ['route' => 'inventory.index', 'icon' => 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4', 'text' => 'Inventory'],
                             ['route' => '#', 'icon' => 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z', 'text' => 'Sales'],
                             ['route' => '#', 'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', 'text' => 'History']
                         ] as $item)
-                            <a href="{{ $item['route'] === 'staff.dashboard' ? route('staff.dashboard') : $item['route'] }}" 
+                            <a href="{{ $item['route'] === 'staff.dashboard' ? route('staff.dashboard') : ($item['route'] === 'inventory.index' ? route('inventory.index') : $item['route']) }}" 
                                class="nav-link inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
                                 {{ request()->routeIs($item['route']) ? 'text-green-600 bg-green-50' : 'text-gray-600 hover:text-green-600 hover:bg-gray-50' }}">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,11 +203,11 @@
                 <div class="px-2 pt-2 pb-3 space-y-1">
                     @foreach([
                         ['route' => 'staff.dashboard', 'icon' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6', 'text' => 'Dashboard'],
-                        ['route' => '#', 'icon' => 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4', 'text' => 'Inventory'],
+                        ['route' => 'inventory.index', 'icon' => 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4', 'text' => 'Inventory'],
                         ['route' => '#', 'icon' => 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z', 'text' => 'Sales'],
                         ['route' => '#', 'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', 'text' => 'History']
                     ] as $item)
-                        <a href="{{ $item['route'] === 'staff.dashboard' ? route('staff.dashboard') : $item['route'] }}" 
+                        <a href="{{ $item['route'] === 'staff.dashboard' ? route('staff.dashboard') : ($item['route'] === 'inventory.index' ? route('inventory.index') : $item['route']) }}" 
                            class="nav-link flex items-center px-3 py-2 rounded-lg text-base font-medium 
                             {{ request()->routeIs($item['route']) ? 'text-green-600 bg-green-50' : 'text-gray-600 hover:text-green-600 hover:bg-gray-50' }}">
                             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
