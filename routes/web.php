@@ -62,5 +62,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/inventory', [App\Http\Controllers\InventoryController::class, 'index'])->name('inventory.index');
 
-    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    // Category routes
+    Route::resource('categories', CategoryController::class);
 });
