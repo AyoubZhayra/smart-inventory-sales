@@ -11,7 +11,6 @@ class Category extends Model
     
     protected $fillable = [
         'name',
-        'description',
         'image_path',
         'status'
     ];
@@ -23,4 +22,19 @@ class Category extends Model
         return $this->hasMany(Item::class);
     }
     */
+
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
+    
+    public function subcategories()
+    {
+        return $this->hasMany(Subcategory::class);
+    }
+    
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

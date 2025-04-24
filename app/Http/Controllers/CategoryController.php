@@ -15,10 +15,13 @@ class CategoryController extends Controller
     {
         $query = $request->input('search');
         
-        $categories = Category::when($query, function($q) use ($query) {
-            return $q->where('name', 'like', "%{$query}%")
-                     ->orWhere('description', 'like', "%{$query}%");
-        })->get();
+        // Fetch all categories (parent_id logic removed earlier)
+        $categories = Category::query()
+            ->when($query, function($q) use ($query) {
+                return $q->where('name', 'like', "%{$query}%");
+            })
+            ->orderBy('name') // Optional: Order categories alphabetically
+            ->get();
         
         return view('categories.index', compact('categories', 'query'));
     }
@@ -26,9 +29,10 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new category.
      */
-    public function create()
+    public function create() // No request needed unless passing other data
     {
-        return view('categories.create');
+        // Removed parent category logic
+        return view('categories.create'); // Pass only view name
     }
 
     /**
@@ -36,33 +40,36 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // Simplified validation for Category only
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
             'status' => 'boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        $data = $request->except('image');
         
-        // Handle image upload
+        $data = $validatedData;
+        $data['status'] = $request->input('status', true); // Default status
+
+        // Handle image upload for Category
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('categories', 'public');
-            $data['image_path'] = $imagePath;
+            $data['image_path'] = $request->file('image')->store('categories', 'public');
         }
 
         Category::create($data);
 
+        // Redirect to the categories index
         return redirect()->route('categories.index')
             ->with('success', 'Category created successfully.');
     }
 
     /**
      * Display the specified category.
+     * Note: This might be redundant if inventory.category view is preferred.
      */
     public function show(Category $category)
     {
-        return view('categories.show', compact('category'));
+        // Simplified: just pass the category. Subcategory loading is handled elsewhere.
+        return view('categories.show', compact('category')); 
     }
 
     /**
@@ -70,6 +77,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        // Simplified: just pass the category to the view
         return view('categories.edit', compact('category'));
     }
 
@@ -78,28 +86,28 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $request->validate([
+         // Simplified validation for Category only
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
             'status' => 'boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data = $request->except('image');
+        $data = $validatedData;
+        $data['status'] = $request->input('status', $category->status);
 
-        // Handle image upload
+        // Handle image upload for Category
         if ($request->hasFile('image')) {
             // Delete old image if exists
             if ($category->image_path) {
                 Storage::disk('public')->delete($category->image_path);
             }
-            
-            $imagePath = $request->file('image')->store('categories', 'public');
-            $data['image_path'] = $imagePath;
+            $data['image_path'] = $request->file('image')->store('categories', 'public');
         }
 
         $category->update($data);
 
+        // Redirect to the categories index
         return redirect()->route('categories.index')
             ->with('success', 'Category updated successfully.');
     }
@@ -114,7 +122,9 @@ class CategoryController extends Controller
             Storage::disk('public')->delete($category->image_path);
         }
         
-        $category->delete();
+        // Note: Deleting a category might orphan subcategories/products
+        // unless cascade delete is set up in migrations or handled here.
+        $category->delete(); 
 
         return redirect()->route('categories.index')
             ->with('success', 'Category deleted successfully.');

@@ -8,6 +8,9 @@ use App\Http\Controllers\ManagerDashboardController;
 use App\Http\Controllers\StaffDashboardController;
 use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubcategoryController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ProductController;
 
 // Redirect root to login
 Route::get('/', function () {
@@ -60,8 +63,19 @@ Route::middleware('auth')->group(function () {
         Route::put('/users/{user}/unsuspend', [UserController::class, 'unsuspend'])->name('users.unsuspend');
     });
 
-    Route::get('/inventory', [App\Http\Controllers\InventoryController::class, 'index'])->name('inventory.index');
+    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+    Route::get('/inventory/categories/{category}', [InventoryController::class, 'showCategory'])->name('inventory.category');
+    Route::get('/inventory/subcategories/{subcategory}', [InventoryController::class, 'showSubcategory'])->name('inventory.subcategory');
 
     // Category routes
     Route::resource('categories', CategoryController::class);
+    
+    // Subcategory routes
+    Route::get('categories/{category}/subcategories/create', [SubcategoryController::class, 'create'])->name('subcategories.create');
+    Route::resource('subcategories', SubcategoryController::class)->except([
+        'index', 'show', 'create'
+    ]);
+
+    // Product routes
+    Route::resource('products', ProductController::class);
 });
